@@ -1,0 +1,15 @@
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  private async seed(Seeder: { default: typeof BaseSeeder }) {
+    await new Seeder.default(this.client).run()
+  }
+
+  async run() {
+    // Run seeders in correct order
+    await this.seed(await import('#database/seeders/user_seeder'))
+    await this.seed(await import('#database/seeders/canteen_seeder'))
+    await this.seed(await import('#database/seeders/table_seeder'))
+    await this.seed(await import('#database/seeders/menu_seeder'))
+  }
+}
