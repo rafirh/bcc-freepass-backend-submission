@@ -12,6 +12,7 @@ import { middleware } from '#start/kernel'
 
 const HealthController = () => import('#controllers/health_controller')
 const AuthController = () => import('#controllers/auth_controller')
+const UserController = () => import('#controllers/user_controller')
 
 router.get('/', async () => {
   return {
@@ -26,11 +27,12 @@ router.group(() => {
   router.group(() => {
     router.post('/register', [AuthController, 'register'])
     router.post('/login', [AuthController, 'login'])
+    router.post('/logout', [AuthController, 'logout']).use(middleware.auth())
   }).prefix('/auth')
 
   router.group(() => {
-    router.post('/logout', [AuthController, 'logout'])
-    router.get('/me', [AuthController, 'me'])
-  }).prefix('/auth').use(middleware.auth())
+    router.get('/me', [UserController, 'me'])
+    router.put('/profile', [UserController, 'updateProfile'])
+  }).prefix('/users').use(middleware.auth())
 
 }).prefix('/api')

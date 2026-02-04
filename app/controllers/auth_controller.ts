@@ -116,30 +116,4 @@ export default class AuthController {
       })
     }
   }
-
-  async me({ auth, response }: HttpContext) {
-    try {
-      const user = auth.getUserOrFail()
-
-      return response.status(200).json({
-        status: 'success',
-        data: {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          full_name: user.fullName,
-          phone_number: user.phoneNumber,
-          is_active: user.isActive,
-          is_verified: user.isVerified,
-          created_at: user.createdAt.toISO(),
-        },
-      })
-    } catch (error) {
-      console.error('Get user error:', error)
-      return response.status(500).json({
-        status: 'error',
-        message: 'Internal server error',
-      })
-    }
-  }
 }
