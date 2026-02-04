@@ -17,6 +17,7 @@ const AdminUserController = () => import('#controllers/admin/user_controller')
 const AdminTableController = () => import('#controllers/admin/table_controller')
 const OwnerCanteenController = () => import('#controllers/owner/canteen_controller')
 const OwnerMenuController = () => import('#controllers/owner/menu_controller')
+const OwnerOrderController = () => import('#controllers/owner/order_controller')
 
 router.get('/', async () => {
   return {
@@ -53,5 +54,9 @@ router.group(() => {
     router.post('/menus', [OwnerMenuController, 'store'])
     router.put('/menus/:id', [OwnerMenuController, 'update'])
     router.delete('/menus/:id', [OwnerMenuController, 'destroy'])
+
+    router.get('/orders', [OwnerOrderController, 'index'])
+    router.get('/orders/:id', [OwnerOrderController, 'show'])
+    router.patch('/orders/:id/status', [OwnerOrderController, 'updateStatus'])
   }).prefix('/owner').use([middleware.auth(), middleware.role({ roles: ['owner'] })])
 }).prefix('/api')
