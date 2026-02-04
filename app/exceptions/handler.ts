@@ -13,6 +13,42 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    const { response } = ctx
+
+    // Check if error is an object with necessary properties
+    if (error && typeof error === 'object') {
+      const err = error as any
+
+      // Handle 404 Not Found
+      if (err.code === 'E_ROUTE_NOT_FOUND' || err.status === 404) {
+        return response.status(404).json({
+          status: 'error',
+          message: 'Endpoint not found',
+          path: ctx.request.url(),
+        })
+      }
+
+      // Handle 401 Unauthorized
+      if (err.code === 'E_UNAUTHORIZED_ACCESS' || err.status === 401) {
+        return response.status(401).json({
+          status: 'error',
+          message: 'Unauthorized access',
+        })
+      }
+
+      // Handle other HTTP exceptions with status codes
+      if ('status' in err && typeof err.status === 'number') {
+        const status = err.status || 500
+        const message = err.message || 'Internal server error'
+
+        return response.status(status).json({
+          status: 'error',
+          message: message,
+        })
+      }
+    }
+
+    // Default handler for unexpected errors
     return super.handle(error, ctx)
   }
 

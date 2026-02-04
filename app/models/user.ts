@@ -7,27 +7,44 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
-  passwordColumnName: 'password',
+  passwordColumnName: 'passwordHash',
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare fullName: string | null
+  declare id: string
 
   @column()
   declare email: string
 
-  @column({ serializeAs: null })
-  declare password: string
+  @column({ serializeAs: null, columnName: 'password_hash' })
+  declare passwordHash: string
 
-  @column.dateTime({ autoCreate: true })
+  @column()
+  declare role: 'user' | 'owner' | 'admin'
+
+  @column({ columnName: 'full_name' })
+  declare fullName: string
+
+  @column({ columnName: 'phone_number' })
+  declare phoneNumber: string | null
+
+  @column({ columnName: 'avatar_url' })
+  declare avatarUrl: string | null
+
+  @column({ columnName: 'is_active' })
+  declare isActive: boolean
+
+  @column({ columnName: 'is_verified' })
+  declare isVerified: boolean
+
+  @column.dateTime({ autoCreate: true, columnName: 'created_at' })
   declare createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true, columnName: 'updated_at' })
+  declare updatedAt: DateTime
 
-  static accessTokens = DbAccessTokensProvider.forModel(User)
+  static accessTokens = DbAccessTokensProvider.forModel(User, {
+    table: 'auth_access_tokens',
+  })
 }
