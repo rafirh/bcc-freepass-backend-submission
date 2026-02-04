@@ -13,7 +13,7 @@ export function handleHttpError(error: any, response: HttpContext['response']) {
   if (error.code === 'E_ROW_NOT_FOUND' || error.code === '22P02') {
     return response.status(404).json({
       status: 'error',
-      message: 'User not found',
+      message: 'Resource not found',
     })
   }
 
@@ -24,6 +24,8 @@ export function handleHttpError(error: any, response: HttpContext['response']) {
       'Cannot update user with role "user". Only owners can be updated.',
     ],
     CANNOT_DELETE_ADMIN: [403, 'Cannot delete admin user'],
+    TABLE_NUMBER_EXISTS: [409, 'Table number already exists'],
+    BARCODE_EXISTS: [409, 'Barcode value already exists'],
   }
 
   if (errorMap[error.message]) {
