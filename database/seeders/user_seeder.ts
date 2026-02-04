@@ -21,7 +21,7 @@ export default class extends BaseSeeder {
       {
         id: db.rawQuery('gen_random_uuid()').knexQuery,
         email: 'ownerdemo@gmail.com',
-        password_hash: await hash.make('ownerdemo213'),
+        password_hash: await hash.make('ownerdemo123'),
         role: 'owner',
         full_name: 'Owner Demo',
         phone_number: '081234567891',

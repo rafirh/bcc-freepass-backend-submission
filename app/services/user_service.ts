@@ -160,7 +160,6 @@ export class UserService {
   async updateOwner(id: string, data: UpdateOwnerData): Promise<UserResponse> {
     const user = await User.findOrFail(id)
 
-    // Hanya bisa update owner, tidak bisa update user
     if (user.role !== 'owner') {
       throw new Error('CANNOT_UPDATE_USER_ROLE')
     }

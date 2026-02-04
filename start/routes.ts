@@ -15,6 +15,7 @@ const AuthController = () => import('#controllers/auth_controller')
 const UserController = () => import('#controllers/user_controller')
 const AdminUserController = () => import('#controllers/admin/user_controller')
 const AdminTableController = () => import('#controllers/admin/table_controller')
+const OwnerCanteenController = () => import('#controllers/owner/canteen_controller')
 
 router.get('/', async () => {
   return {
@@ -41,4 +42,10 @@ router.group(() => {
     router.resource('users', AdminUserController).apiOnly()
     router.resource('tables', AdminTableController).apiOnly()
   }).prefix('/admin').use([middleware.auth(), middleware.role({ roles: ['admin'] })])
+
+  router.group(() => {
+    router.get('/canteen', [OwnerCanteenController, 'show'])
+    router.post('/canteen', [OwnerCanteenController, 'store'])
+    router.put('/canteen', [OwnerCanteenController, 'update'])
+  }).prefix('/owner').use([middleware.auth(), middleware.role({ roles: ['owner'] })])
 }).prefix('/api')
