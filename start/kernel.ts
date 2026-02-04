@@ -10,6 +10,7 @@
 
 import router from '@adonisjs/core/services/router'
 import server from '@adonisjs/core/services/server'
+import app from '@adonisjs/core/services/app'
 
 /**
  * The error handler is used to convert an exception
@@ -26,6 +27,7 @@ server.use([
   () => import('#middleware/container_bindings_middleware'),
   () => import('#middleware/force_json_response_middleware'),
   () => import('@adonisjs/cors/cors_middleware'),
+  () => import('@adonisjs/static/static_middleware'),
 ])
 
 /**

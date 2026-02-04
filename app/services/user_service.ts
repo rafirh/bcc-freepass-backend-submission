@@ -93,7 +93,7 @@ export class UserService {
     }
 
     const avatarName = `${cuid()}.${avatar.extname}`
-    await avatar.move(app.makePath('uploads/avatars'), {
+    await avatar.move(app.makePath('public/uploads/avatars'), {
       name: avatarName,
     })
 
@@ -102,7 +102,7 @@ export class UserService {
 
   private async deleteOldAvatar(avatarUrl: string): Promise<void> {
     try {
-      const oldAvatarPath = app.makePath('uploads/avatars', path.basename(avatarUrl))
+      const oldAvatarPath = app.makePath('public/uploads/avatars', path.basename(avatarUrl))
       await unlink(oldAvatarPath)
     } catch (error) {
       console.error('Error deleting old avatar:', error)
