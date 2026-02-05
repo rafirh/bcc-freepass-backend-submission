@@ -276,6 +276,20 @@ Before running this service, ensure you have the following installed:
    http://bcc-canteen.iccn.or.id/
    ```
 
+### Testing Payment Gateway
+
+For testing payment transactions in sandbox environment, you can use the Midtrans Payment Simulator:
+
+**Midtrans Payment Simulator:**
+- URL: [https://simulator.sandbox.midtrans.com/](https://simulator.sandbox.midtrans.com/)
+
+This simulator allows you to test various payment scenarios including:
+- Successful payments
+- Failed payments
+- Pending payments
+
+Simply paste the payment or QRIS URL or transaction token from the API response into the simulator to complete the payment process.
+
 ## **📞** Contact
 
 Have any questions? You can contact [Atha](https://www.instagram.com/mhqif/).
