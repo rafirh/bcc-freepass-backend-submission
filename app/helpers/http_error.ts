@@ -13,7 +13,7 @@ export function handleHttpError(error: any, response: HttpContext['response']) {
   if (error.code === 'E_ROW_NOT_FOUND' || error.code === '22P02') {
     return response.status(404).json({
       status: 'error',
-      message: 'Resource not found',
+      message: 'Data not found',
     })
   }
 

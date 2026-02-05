@@ -48,6 +48,55 @@ export class ReviewService {
     return this.formatReviewResponse(review)
   }
 
+  async getReviewsByCanteenId(canteenId: string, page: number, limit: number) {
+    const reviewsQuery = Review.query()
+      .select('reviews.*')
+      .innerJoin('orders', 'reviews.order_id', 'orders.id')
+      .where('orders.canteen_id', canteenId)
+      .preload('user', (query) => {
+        query.select('id', 'full_name', 'avatar')
+      })
+      .preload('order', (query) => {
+        query.select('id', 'order_status', 'created_at')
+      })
+      .orderBy('reviews.created_at', 'desc')
+
+    const reviews = await reviewsQuery.paginate(page, limit)
+
+    const reviewData = reviews.all().map((review) => ({
+      id: review.id,
+      rating: review.rating,
+      comment: review.comment,
+      created_at: review.createdAt?.toISO(),
+      user: {
+        id: review.user.id,
+        full_name: review.user.fullName,
+        avatar_url: review.user.avatarUrl,
+      },
+      order: {
+        id: review.order.id,
+        order_status: review.order.orderStatus,
+        created_at: review.order.createdAt?.toISO(),
+      },
+    }))
+
+    return {
+      reviews: reviewData,
+      meta: reviews.getMeta(),
+    }
+  }
+
+  async deleteReviewByOwner(reviewId: string, canteenId: string): Promise<void> {
+    const review = await Review.query()
+      .select('reviews.*')
+      .innerJoin('orders', 'reviews.order_id', 'orders.id')
+      .where('reviews.id', reviewId)
+      .where('orders.canteen_id', canteenId)
+      .firstOrFail()
+
+    await review.delete()
+  }
+
   private formatReviewResponse(review: Review): ReviewResponse {
     return {
       id: review.id,
