@@ -48,7 +48,13 @@ export class CanteenService {
       canteens.all().map(async (canteen) => {
         const stats = await this.getCanteenStats(canteen.id)
         return {
-          ...this.formatCanteenResponse(canteen),
+          id: canteen.id,
+          name: canteen.name,
+          description: canteen.description,
+          logo_url: canteen.logoUrl,
+          location: canteen.location,
+          status: canteen.status,
+          opening_hours: canteen.openingHours,
           ...stats,
         }
       })
@@ -60,14 +66,25 @@ export class CanteenService {
     }
   }
 
-  async getCanteenById(id: string): Promise<CanteenResponse | null> {
+  async getCanteenById(id: string) {
     const canteen = await Canteen.query().where('id', id).first()
 
     if (!canteen) {
       return null
     }
 
-    return this.formatCanteenResponse(canteen)
+    const stats = await this.getCanteenStats(canteen.id)
+
+    return {
+      id: canteen.id,
+      name: canteen.name,
+      description: canteen.description,
+      logo_url: canteen.logoUrl,
+      location: canteen.location,
+      status: canteen.status,
+      opening_hours: canteen.openingHours,
+      ...stats,
+    }
   }
 
   async getCanteenByOwnerId(ownerId: string): Promise<CanteenResponse | null> {
