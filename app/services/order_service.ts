@@ -78,19 +78,19 @@ export class OrderService {
 
   async createOrder(userId: string, data: CreateOrderData) {
     if (!data.items || data.items.length === 0) {
-      throw new Error('Order must contain at least one item')
+      throw new Error('ORDER_EMPTY')
     }
 
     const menuIds = data.items.map((item) => item.menu_id)
     const menus = await Menu.query().whereIn('id', menuIds)
 
     if (menus.length !== menuIds.length) {
-      throw new Error('One or more menu items not found')
+      throw new Error('MENU_NOT_FOUND')
     }
 
     const canteenIds = [...new Set(menus.map((menu) => menu.canteenId))]
     if (canteenIds.length > 1) {
-      throw new Error('All menu items must be from the same canteen')
+      throw new Error('MENU_DIFFERENT_CANTEEN')
     }
 
     for (const menu of menus) {
@@ -98,17 +98,20 @@ export class OrderService {
       if (!orderItem) continue
 
       if (!menu.isActive) {
-        throw new Error(`Menu item ${menu.name} is not active`)
+        throw new Error('MENU_NOT_ACTIVE')
       }
       if (menu.stockStatus === 'out_of_stock') {
-        throw new Error(`Menu item ${menu.name} is out of stock`)
+        throw new Error('MENU_OUT_OF_STOCK')
       }
       if (menu.stock < orderItem.quantity) {
-        throw new Error(`Insufficient stock for ${menu.name}`)
+        throw new Error('MENU_INSUFFICIENT_STOCK')
       }
     }
 
-    await Table.findOrFail(data.table_id)
+    const table = await Table.find(data.table_id)
+    if (!table) {
+      throw new Error('TABLE_NOT_FOUND')
+    }
 
     const canteenId = menus[0].canteenId
 
@@ -325,7 +328,7 @@ export class OrderService {
     const order = await Order.query().where('id', orderId).preload('payment').firstOrFail()
 
     if (!order.payment) {
-      throw new Error('Payment record not found for this order')
+      throw new Error('PAYMENT_NOT_FOUND')
     }
 
     const payment = order.payment

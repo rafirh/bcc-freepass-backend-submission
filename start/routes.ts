@@ -20,6 +20,7 @@ const OwnerCanteenController = () => import('#controllers/owner/canteen_controll
 const OwnerMenuController = () => import('#controllers/owner/menu_controller')
 const OwnerOrderController = () => import('#controllers/owner/order_controller')
 const UserOrderController = () => import('#controllers/user/order_controller')
+const UserReviewController = () => import('#controllers/user/review_controller')
 const MidtransWebhookController = () => import('#controllers/midtrans_webhook_controller')
 
 router.get('/', async () => {
@@ -55,6 +56,7 @@ router.group(() => {
     router.get('/orders', [UserOrderController, 'index'])
     router.post('/orders', [UserOrderController, 'store'])
     router.get('/orders/:id', [UserOrderController, 'show'])
+    router.post('/reviews', [UserReviewController, 'store'])
   }).prefix('/user').use([middleware.auth(), middleware.role({ roles: ['user'] })])
 
   router.group(() => {
