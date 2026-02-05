@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'bcc-freepass-backend',
-      script: './bin/server.js',
+      script: './build/bin/server.js',
       instances: 1,
       exec_mode: 'cluster',
       autorestart: true,
