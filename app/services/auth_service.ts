@@ -42,7 +42,7 @@ export class AuthService {
       phoneNumber: data.phone_number || null,
       role: 'user',
       isActive: true,
-      isVerified: false,
+      isVerified: true,
     })
 
     return user
