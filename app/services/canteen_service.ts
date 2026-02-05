@@ -1,4 +1,5 @@
 import Canteen from '#models/canteen'
+import db from '@adonisjs/lucid/services/db'
 
 export interface CreateCanteenData {
   name: string
@@ -31,13 +32,27 @@ export interface CanteenResponse {
   updated_at?: string | null
 }
 
+export interface CanteenListResponse extends CanteenResponse {
+  rating: number
+  ratings_count: number
+  menus_count: number
+}
+
 export class CanteenService {
   async getAllCanteens(page: number, limit: number) {
     const canteens = await Canteen.query()
       .orderBy('created_at', 'desc')
       .paginate(page, limit)
 
-    const canteenData = canteens.all().map((canteen) => this.formatCanteenResponse(canteen))
+    const canteenData = await Promise.all(
+      canteens.all().map(async (canteen) => {
+        const stats = await this.getCanteenStats(canteen.id)
+        return {
+          ...this.formatCanteenResponse(canteen),
+          ...stats,
+        }
+      })
+    )
 
     return {
       canteens: canteenData,
@@ -114,6 +129,35 @@ export class CanteenService {
 
     await canteen.save()
     return this.formatCanteenResponse(canteen)
+  }
+
+  private async getCanteenStats(canteenId: string) {
+    const menusCountResult = await db
+      .from('menus')
+      .where('canteen_id', canteenId)
+      .count('* as total')
+      .first()
+
+    const menusCount = Number(menusCountResult?.total || 0)
+
+    const ratingsResult = await db
+      .from('reviews')
+      .innerJoin('orders', 'reviews.order_id', 'orders.id')
+      .where('orders.canteen_id', canteenId)
+      .select(
+        db.raw('COUNT(reviews.id) as count'),
+        db.raw('COALESCE(AVG(CAST(reviews.rating::text AS INTEGER)), 0) as average')
+      )
+      .first()
+
+    const ratingsCount = Number(ratingsResult?.count || 0)
+    const averageRating = Number(ratingsResult?.average || 0)
+
+    return {
+      average_rating: Number(averageRating.toFixed(1)) || null,
+      ratings_count: ratingsCount,
+      menus_count: menusCount,
+    }
   }
 
   private formatCanteenResponse(canteen: Canteen): CanteenResponse {
