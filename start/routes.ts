@@ -20,6 +20,7 @@ const OwnerCanteenController = () => import('#controllers/owner/canteen_controll
 const OwnerMenuController = () => import('#controllers/owner/menu_controller')
 const OwnerOrderController = () => import('#controllers/owner/order_controller')
 const UserOrderController = () => import('#controllers/user/order_controller')
+const MidtransWebhookController = () => import('#controllers/midtrans_webhook_controller')
 
 router.get('/', async () => {
   return {
@@ -47,8 +48,13 @@ router.group(() => {
   router.get('/canteens/:canteenId/menus', [CanteenController, 'getMenus'])
 
   router.group(() => {
+    router.post('/webhooks/midtrans', [MidtransWebhookController, 'handle'])
+  })
+
+  router.group(() => {
     router.get('/orders', [UserOrderController, 'index'])
-  }).prefix('/user').use(middleware.auth())
+    router.post('/orders', [UserOrderController, 'store'])
+  }).prefix('/user').use([middleware.auth(), middleware.role({ roles: ['user'] })])
 
   router.group(() => {
     router.resource('users', AdminUserController).apiOnly()
