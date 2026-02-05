@@ -19,7 +19,10 @@ export default class extends BaseSeeder {
       })
     }
 
-    const ownerBangGentong = await db.from('users').where('email', 'owner.banggentong@gmail.com').first()
+    const ownerBangGentong = await db
+      .from('users')
+      .where('email', 'owner.banggentong@gmail.com')
+      .first()
     if (ownerBangGentong) {
       await db.table('canteens').insert({
         id: db.rawQuery('gen_random_uuid()').knexQuery,
@@ -34,7 +37,10 @@ export default class extends BaseSeeder {
       })
     }
 
-    const ownerGeprek = await db.from('users').where('email', 'owner.gepreklegend@gmail.com').first()
+    const ownerGeprek = await db
+      .from('users')
+      .where('email', 'owner.gepreklegend@gmail.com')
+      .first()
     if (ownerGeprek) {
       await db.table('canteens').insert({
         id: db.rawQuery('gen_random_uuid()').knexQuery,

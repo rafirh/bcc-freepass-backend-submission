@@ -8,11 +8,14 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
       table.string('email', 255).notNullable().unique()
       table.text('password_hash').notNullable()
-      table.enu('role', ['user', 'owner', 'admin'], {
-        useNative: true,
-        existingType: true,
-        enumName: 'user_role'
-      }).notNullable().defaultTo('user')
+      table
+        .enu('role', ['user', 'owner', 'admin'], {
+          useNative: true,
+          existingType: true,
+          enumName: 'user_role',
+        })
+        .notNullable()
+        .defaultTo('user')
       table.string('full_name', 150).notNullable()
       table.string('phone_number', 20).nullable()
       table.text('avatar_url').nullable()

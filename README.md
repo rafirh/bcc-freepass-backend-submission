@@ -16,6 +16,7 @@ To address this need, we introduce BCC Canteen, a digital platform designed to t
 ## **⭐** Minimum Viable Product (MVP)
 
 As the initial development phase of BCC Canteen, the system must support the following minimum features:
+
 - New users can register an account ✔️
 - Users can log in to the system ✔️
 - Users can edit their profile information ✔️
@@ -139,7 +140,7 @@ You might be overwhelmed by these requirements. Don't worry, here's a list of so
 > 3. PHP
 > 4. Java
 
-You are welcome to use any libraries or frameworks, but we appreciate it if you use the popular ones. 
+You are welcome to use any libraries or frameworks, but we appreciate it if you use the popular ones.
 
 ## **🎒** Tasks
 
@@ -165,13 +166,15 @@ Before running this service, ensure you have the following installed:
 ### Installation Steps
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Set up environment variables**
-   
+
    Copy the `.env.example` file to `.env`:
+
    ```bash
    cp .env.example .env
    ```
@@ -194,20 +197,25 @@ Before running this service, ensure you have the following installed:
    - `MIDTRANS_ENV` - Midtrans environment (default: `sandbox`, use `production` for live)
 
 3. **Create PostgreSQL database**
+
    ```bash
    createdb bcc_canteen
    ```
+
    Or create manually via PostgreSQL client/pgAdmin.
 
 4. **Run database migrations**
+
    ```bash
    node ace migration:run
    ```
 
 5. **Seed the database (optional)**
+
    ```bash
    node ace db:seed
    ```
+
    This will create sample data including:
    - 1 admin account
    - 1 regular user account
@@ -217,12 +225,15 @@ Before running this service, ensure you have the following installed:
    - Sample tables
 
 6. **Generate APP_KEY**
+
    ```bash
    node ace generate:key
    ```
+
    Copy the generated key to `APP_KEY` in your `.env` file.
 
 7. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -232,14 +243,17 @@ Before running this service, ensure you have the following installed:
 ### Default Credentials (after seeding)
 
 **Admin:**
+
 - Email: `admindemo@gmail.com`
 - Password: `admindemo123`
 
 **Regular User:**
+
 - Email: `userdemo@gmail.com`
 - Password: `userdemo123`
 
 **Canteen Owners:**
+
 - Email: `ownerdemo@gmail.com` (Pak Sabar - Mie Ayam Solo) / Password: `ownerdemo123`
 - Email: `owner.banggentong@gmail.com` (Bang Gentong - Nasi Goreng) / Password: `owner123`
 - Email: `owner.gepreklegend@gmail.com` (Geprek Legend) / Password: `owner123`
@@ -247,14 +261,17 @@ Before running this service, ensure you have the following installed:
 ### Api Documentation
 
 1. **Access the API documentation**
-   
+
    You can access the API documentation at:
+
    ```
    https://gl71p1jkcw.apidog.io/
    ```
+
 2. **Explore the endpoints**
-   
+
    You can access the deployed API at:
+
    ```
    http://bcc-canteen.iccn.or.id/
    ```
@@ -262,12 +279,13 @@ Before running this service, ensure you have the following installed:
 ## **📞** Contact
 
 Have any questions? You can contact [Atha](https://www.instagram.com/mhqif/).
+
 ## **🎁** Submission
 
 Please follow the instructions on the [Contributing guide](CONTRIBUTING.md).
 
 ![cheers](https:
+
 > This is not the only way to join us.
 >
 > **But, this is the _one and only way_ to instantly pass.**
-

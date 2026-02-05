@@ -11,5 +11,3 @@
 9. The program must use English for commit messages, variable naming, data responses, API documentation, etc.
 10. The deadline is at `February 6th, 2026 20:30:00` Western Indonesian Time. It is recommended to create the pull request 1 day before the deadline, because you can still add commits after creating the pull request, until the time of the deadline (commits created after the deadline will not be considered).
 11. There is an interview after you did a pull request. Please, prepare yourself for the interview, our team will contact you immediately. Consider following our social media on [Instagram](https://www.instagram.com/bccfilkom/) for further information.
-
-

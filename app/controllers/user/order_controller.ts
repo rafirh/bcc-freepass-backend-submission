@@ -14,9 +14,11 @@ export default class OrderController {
   async index({ auth, request, response }: HttpContext) {
     try {
       const user = auth.getUserOrFail()
-      const { page = 1, limit = 10, status } = await request.validateUsing(
-        getUserOrdersQueryValidator
-      )
+      const {
+        page = 1,
+        limit = 10,
+        status,
+      } = await request.validateUsing(getUserOrdersQueryValidator)
 
       const result = await this.orderService.getOrdersByUserId(user.id, page, limit, status)
 

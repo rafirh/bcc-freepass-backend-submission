@@ -40,9 +40,7 @@ export interface CanteenListResponse extends CanteenResponse {
 
 export class CanteenService {
   async getAllCanteens(page: number, limit: number) {
-    const canteens = await Canteen.query()
-      .orderBy('created_at', 'desc')
-      .paginate(page, limit)
+    const canteens = await Canteen.query().orderBy('created_at', 'desc').paginate(page, limit)
 
     const canteenData = await Promise.all(
       canteens.all().map(async (canteen) => {

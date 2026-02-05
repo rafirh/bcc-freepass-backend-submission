@@ -83,7 +83,7 @@ export class UserService {
       email: user.email,
       full_name: user.fullName,
       phone_number: user.phoneNumber,
-      avatar_url: user.avatarUrl
+      avatar_url: user.avatarUrl,
     }
   }
 
@@ -116,9 +116,7 @@ export class UserService {
     users: UserResponse[]
     meta: { total: number; page: number; limit: number; totalPages: number }
   }> {
-    const users = await User.query()
-      .whereIn('role', ['user', 'owner'])
-      .paginate(page, limit)
+    const users = await User.query().whereIn('role', ['user', 'owner']).paginate(page, limit)
 
     return {
       users: users.all().map((user) => this.formatUserResponse(user)),

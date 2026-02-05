@@ -11,11 +11,14 @@ export default class extends BaseSchema {
       table.text('description').nullable()
       table.text('logo_url').nullable()
       table.string('location', 200).nullable()
-      table.enu('status', ['open', 'closed'], {
-        useNative: true,
-        existingType: true,
-        enumName: 'canteen_status'
-      }).notNullable().defaultTo('open')
+      table
+        .enu('status', ['open', 'closed'], {
+          useNative: true,
+          existingType: true,
+          enumName: 'canteen_status',
+        })
+        .notNullable()
+        .defaultTo('open')
       table.text('opening_hours').nullable()
 
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())

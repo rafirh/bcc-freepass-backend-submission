@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { UserService } from '#services/user_service'
 import { createOwnerValidator, updateOwnerValidator } from '#validators/user_validator'
-import { handleHttpError } from '#helpers/http_error';
+import { handleHttpError } from '#helpers/http_error'
 
 export default class UserController {
   private userService: UserService

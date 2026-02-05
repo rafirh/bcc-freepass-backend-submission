@@ -15,12 +15,7 @@ export default class MidtransWebhookController {
     try {
       const notification = request.body()
 
-      const {
-        order_id,
-        status_code,
-        gross_amount,
-        signature_key: receivedSignature,
-      } = notification
+      const { order_id, status_code, gross_amount, signature_key: receivedSignature } = notification
 
       const serverKey = midtransConfig.serverKey
       const signatureString = `${order_id}${status_code}${gross_amount}${serverKey}`

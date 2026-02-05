@@ -53,9 +53,12 @@ export default class CanteenController {
 
   async getMenus({ params, request, response }: HttpContext) {
     try {
-      const { page = 1, limit = 10, category, search } = await request.validateUsing(
-        getMenusByCanteenQueryValidator
-      )
+      const {
+        page = 1,
+        limit = 10,
+        category,
+        search,
+      } = await request.validateUsing(getMenusByCanteenQueryValidator)
 
       const result = await this.menuService.getMenusByCanteenId(
         params.canteenId,

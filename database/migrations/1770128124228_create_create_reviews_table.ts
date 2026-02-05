@@ -8,11 +8,13 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
       table.uuid('order_id').notNullable().references('id').inTable('orders').onDelete('CASCADE')
       table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
-      table.enu('rating', ['1', '2', '3', '4', '5'], {
-        useNative: true,
-        existingType: true,
-        enumName: 'rating_scale'
-      }).notNullable()
+      table
+        .enu('rating', ['1', '2', '3', '4', '5'], {
+          useNative: true,
+          existingType: true,
+          enumName: 'rating_scale',
+        })
+        .notNullable()
       table.text('comment').nullable()
 
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())

@@ -26,7 +26,10 @@ export function handleHttpError(error: any, response: HttpContext['response']) {
     CANNOT_DELETE_ADMIN: [403, 'Cannot delete admin user'],
     TABLE_NUMBER_EXISTS: [409, 'Table number already exists'],
     BARCODE_EXISTS: [409, 'Barcode value already exists'],
-    OWNER_ALREADY_HAS_CANTEEN: [400, 'Owner already has a canteen. Only one canteen is allowed per owner.'],
+    OWNER_ALREADY_HAS_CANTEEN: [
+      400,
+      'Owner already has a canteen. Only one canteen is allowed per owner.',
+    ],
     ORDER_EMPTY: [400, 'Order must contain at least one item'],
     MENU_NOT_FOUND: [404, 'One or more menu items not found'],
     MENU_DIFFERENT_CANTEEN: [400, 'All menu items must be from the same canteen'],

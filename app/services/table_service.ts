@@ -40,9 +40,7 @@ export class TableService {
   }
 
   async getAllTables(page: number, limit: number) {
-    const tables = await Table.query()
-      .orderBy('created_at', 'desc')
-      .paginate(page, limit)
+    const tables = await Table.query().orderBy('created_at', 'desc').paginate(page, limit)
 
     const tableData = tables.all().map((table) => this.formatTableResponse(table))
 
@@ -58,17 +56,13 @@ export class TableService {
   }
 
   async createTable(data: CreateTableData): Promise<TableResponse> {
-    const existingTableNumber = await Table.query()
-      .where('table_number', data.table_number)
-      .first()
+    const existingTableNumber = await Table.query().where('table_number', data.table_number).first()
 
     if (existingTableNumber) {
       throw new Error('TABLE_NUMBER_EXISTS')
     }
 
-    const existingBarcode = await Table.query()
-      .where('barcode_value', data.barcode_value)
-      .first()
+    const existingBarcode = await Table.query().where('barcode_value', data.barcode_value).first()
 
     if (existingBarcode) {
       throw new Error('BARCODE_EXISTS')

@@ -6,17 +6,28 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
-      table.uuid('order_id').notNullable().unique().references('id').inTable('orders').onDelete('CASCADE')
-      table.enu('payment_status', ['pending', 'paid', 'failed', 'refunded'], {
-        useNative: true,
-        existingType: true,
-        enumName: 'payment_status'
-      }).notNullable().defaultTo('pending')
-      table.enu('payment_method', ['dana', 'gopay', 'ovo', 'shopeepay', 'qris', 'bank_transfer'], {
-        useNative: true,
-        existingType: true,
-        enumName: 'payment_method'
-      }).nullable()
+      table
+        .uuid('order_id')
+        .notNullable()
+        .unique()
+        .references('id')
+        .inTable('orders')
+        .onDelete('CASCADE')
+      table
+        .enu('payment_status', ['pending', 'paid', 'failed', 'refunded'], {
+          useNative: true,
+          existingType: true,
+          enumName: 'payment_status',
+        })
+        .notNullable()
+        .defaultTo('pending')
+      table
+        .enu('payment_method', ['dana', 'gopay', 'ovo', 'shopeepay', 'qris', 'bank_transfer'], {
+          useNative: true,
+          existingType: true,
+          enumName: 'payment_method',
+        })
+        .nullable()
       table.decimal('amount', 12, 2).notNullable().checkPositive()
       table.text('gateway_transaction_id').nullable()
       table.jsonb('gateway_response').nullable()

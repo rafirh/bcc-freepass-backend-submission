@@ -4,7 +4,10 @@ import db from '@adonisjs/lucid/services/db'
 export default class extends BaseSeeder {
   static environment = ['']
   async run() {
-    const canteenMieSabar = await db.from('canteens').where('name', 'Mie Ayam Solo Pak Sabar').first()
+    const canteenMieSabar = await db
+      .from('canteens')
+      .where('name', 'Mie Ayam Solo Pak Sabar')
+      .first()
     if (canteenMieSabar) {
       await db.table('menus').multiInsert([
         {
@@ -75,7 +78,10 @@ export default class extends BaseSeeder {
       ])
     }
 
-    const canteenBangGentong = await db.from('canteens').where('name', 'Nasi Goreng Bang Gentong').first()
+    const canteenBangGentong = await db
+      .from('canteens')
+      .where('name', 'Nasi Goreng Bang Gentong')
+      .first()
     if (canteenBangGentong) {
       await db.table('menus').multiInsert([
         {

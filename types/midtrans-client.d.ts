@@ -1,10 +1,6 @@
 declare module 'midtrans-client' {
   export class Snap {
-    constructor(config: {
-      isProduction: boolean
-      serverKey: string
-      clientKey: string
-    })
+    constructor(config: { isProduction: boolean; serverKey: string; clientKey: string })
 
     createTransaction(params: {
       transaction_details: {
@@ -30,10 +26,6 @@ declare module 'midtrans-client' {
   }
 
   export class CoreApi {
-    constructor(config: {
-      isProduction: boolean
-      serverKey: string
-      clientKey: string
-    })
+    constructor(config: { isProduction: boolean; serverKey: string; clientKey: string })
   }
 }
