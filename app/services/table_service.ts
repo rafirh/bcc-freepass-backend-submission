@@ -25,6 +25,20 @@ export interface TableResponse {
 }
 
 export class TableService {
+  async getAllActiveTables() {
+    const tables = await Table.query()
+      .where('isActive', true)
+      .select('id', 'tableNumber', 'barcodeValue', 'locationInfo')
+      .orderBy('tableNumber', 'asc')
+
+    return tables.map((table) => ({
+      id: table.id,
+      table_number: table.tableNumber,
+      barcode_value: table.barcodeValue,
+      location_info: table.locationInfo,
+    }))
+  }
+
   async getAllTables(page: number, limit: number) {
     const tables = await Table.query()
       .orderBy('created_at', 'desc')

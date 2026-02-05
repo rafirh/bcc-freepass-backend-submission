@@ -14,6 +14,7 @@ const HealthController = () => import('#controllers/health_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const UserController = () => import('#controllers/user_controller')
 const CanteenController = () => import('#controllers/canteen_controller')
+const TableController = () => import('#controllers/table_controller')
 const AdminUserController = () => import('#controllers/admin/user_controller')
 const AdminTableController = () => import('#controllers/admin/table_controller')
 const OwnerCanteenController = () => import('#controllers/owner/canteen_controller')
@@ -47,6 +48,8 @@ router.group(() => {
   router.get('/canteens', [CanteenController, 'index'])
   router.get('/canteens/:id', [CanteenController, 'show'])
   router.get('/canteens/:canteenId/menus', [CanteenController, 'getMenus'])
+
+  router.get('/tables', [TableController, 'index'])
 
   router.group(() => {
     router.post('/webhooks/midtrans', [MidtransWebhookController, 'handle'])
