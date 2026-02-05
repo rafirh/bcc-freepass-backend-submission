@@ -54,6 +54,7 @@ router.group(() => {
   router.group(() => {
     router.get('/orders', [UserOrderController, 'index'])
     router.post('/orders', [UserOrderController, 'store'])
+    router.get('/orders/:id', [UserOrderController, 'show'])
   }).prefix('/user').use([middleware.auth(), middleware.role({ roles: ['user'] })])
 
   router.group(() => {

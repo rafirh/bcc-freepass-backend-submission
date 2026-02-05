@@ -52,4 +52,20 @@ export default class OrderController {
       return handleHttpError(error, response)
     }
   }
+
+  async show({ auth, params, response }: HttpContext) {
+    try {
+      const user = auth.getUserOrFail()
+      const orderId = params.id
+
+      const order = await this.orderService.getOrderDetailByUserId(user.id, orderId)
+
+      return response.status(200).json({
+        status: 'success',
+        data: order,
+      })
+    } catch (error) {
+      return handleHttpError(error, response)
+    }
+  }
 }

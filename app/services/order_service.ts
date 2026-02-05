@@ -55,6 +55,14 @@ export interface OrderResponse {
     payment_method: string | null
     amount: number
   }
+  items?: Array<{
+    id: string
+    menu_id: string | null
+    menu_name: string
+    quantity: number
+    unit_price: number
+    subtotal: number
+  }>
 }
 
 export class OrderService {
@@ -228,6 +236,20 @@ export class OrderService {
       orders: orderData,
       meta: orders.getMeta(),
     }
+  }
+
+  async getOrderDetailByUserId(userId: string, orderId: string): Promise<OrderResponse> {
+    const order = await Order.query()
+      .where('id', orderId)
+      .where('user_id', userId)
+      .preload('user')
+      .preload('canteen')
+      .preload('table')
+      .preload('payment')
+      .preload('items')
+      .firstOrFail()
+
+    return this.formatOrderResponse(order)
   }
 
   async getOrdersByOwnerId(
@@ -405,6 +427,17 @@ export class OrderService {
         payment_method: order.payment.paymentMethod,
         amount: order.payment.amount,
       }
+    }
+
+    if (order.items && order.items.length > 0) {
+      response.items = order.items.map((item) => ({
+        id: item.id,
+        menu_id: item.menuId,
+        menu_name: item.menuName,
+        quantity: item.quantity,
+        unit_price: item.unitPrice,
+        subtotal: item.subtotal,
+      }))
     }
 
     return response
