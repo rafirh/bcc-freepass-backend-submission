@@ -154,7 +154,116 @@ The implementation of this project MUST be in the form of a REST, gRPC, or Graph
 
 ## **🧪** API Installation
 
-> Write how to run your service in a local or development environment here. If you use Docker to serve your DBMS or your server, you will receive bonus points for your submission.
+### Prerequisites
+
+Before running this service, ensure you have the following installed:
+
+- **Node.js** (v20 or higher)
+- **npm** or **yarn** package manager
+- **PostgreSQL** (v14 or higher)
+
+### Installation Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd bcc-freepass-backend-submission
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   
+   Copy the `.env.example` file to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Configure the following variables in your `.env` file:
+
+   **Required Configuration:**
+   - `APP_KEY` - Generate using: `node ace generate:key`
+   - `DB_HOST` - PostgreSQL host (default: `127.0.0.1`)
+   - `DB_PORT` - PostgreSQL port (default: `5432`)
+   - `DB_USER` - PostgreSQL username (default: `root`)
+   - `DB_PASSWORD` - PostgreSQL password (default: `root`)
+   - `DB_DATABASE` - Database name (default: `app`)
+   - `MIDTRANS_SERVER_KEY` - Your Midtrans server key (get from [Midtrans Dashboard](https://dashboard.midtrans.com/))
+   - `MIDTRANS_CLIENT_KEY` - Your Midtrans client key (get from [Midtrans Dashboard](https://dashboard.midtrans.com/))
+
+   **Optional Configuration:**
+   - `PORT` - Server port (default: `3333`)
+   - `HOST` - Server host (default: `localhost`)
+   - `MIDTRANS_ENV` - Midtrans environment (default: `sandbox`, use `production` for live)
+
+4. **Create PostgreSQL database**
+   ```bash
+   createdb bcc_canteen
+   ```
+   Or create manually via PostgreSQL client/pgAdmin.
+
+5. **Run database migrations**
+   ```bash
+   node ace migration:run
+   ```
+
+6. **Seed the database (optional)**
+   ```bash
+   node ace db:seed
+   ```
+   This will create sample data including:
+   - 1 admin account
+   - 1 regular user account
+   - 3 canteen owner accounts
+   - 3 canteens (Mie Ayam Solo Pak Sabar, Nasi Goreng Bang Gentong, Geprek Legend)
+   - Menus for each canteen
+   - Sample tables
+
+7. **Generate APP_KEY**
+   ```bash
+   node ace generate:key
+   ```
+   Copy the generated key to `APP_KEY` in your `.env` file.
+
+8. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+   The API will be available at: `http://localhost:3333`
+
+### Default Credentials (after seeding)
+
+**Admin:**
+- Email: `admindemo@gmail.com`
+- Password: `admindemo123`
+
+**Regular User:**
+- Email: `userdemo@gmail.com`
+- Password: `userdemo123`
+
+**Canteen Owners:**
+- Email: `ownerdemo@gmail.com` (Pak Sabar - Mie Ayam Solo) / Password: `ownerdemo123`
+- Email: `owner.banggentong@gmail.com` (Bang Gentong - Nasi Goreng) / Password: `owner123`
+- Email: `owner.gepreklegend@gmail.com` (Geprek Legend) / Password: `owner123`
+
+### Api Documentation
+
+1. **Access the API documentation**
+   
+   You can access the API documentation at:
+   ```
+   https://gl71p1jkcw.apidog.io/
+   ```
+2. **Deployed API URL**
+   
+   The deployed API can be accessed at:
+   ```
+   http://bcc-canteen.iccn.or.id/
+   ```
 
 ## **📞** Contact
 
