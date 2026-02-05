@@ -308,16 +308,59 @@ export class OrderService {
     const order = await Order.query()
       .where('id', orderId)
       .where('canteen_id', canteen.id)
+      .preload('payment')
       .firstOrFail()
+
+    // Validate status transition
+    this.validateOrderStatusTransition(order.orderStatus, data.order_status)
+
+    // Validate payment before allowing status change to cooking
+    await this.validatePaymentBeforeStatusChange(order, data.order_status)
 
     order.orderStatus = data.order_status
     await order.save()
 
     await order.load('user')
     await order.load('table')
-    await order.load('payment')
 
     return this.formatOrderResponse(order)
+  }
+
+  private validateOrderStatusTransition(
+    currentStatus: Order['orderStatus'],
+    newStatus: UpdateOrderStatusData['order_status']
+  ): void {
+    const validTransitions: Record<
+      Order['orderStatus'],
+      Array<UpdateOrderStatusData['order_status']>
+    > = {
+      waiting: ['cooking'],
+      cooking: ['ready'],
+      ready: ['completed'],
+      completed: [],
+      cancelled: [],
+    }
+
+    const allowedStatuses = validTransitions[currentStatus]
+
+    if (!allowedStatuses.includes(newStatus)) {
+      throw new Error('INVALID_STATUS_TRANSITION')
+    }
+  }
+
+  private async validatePaymentBeforeStatusChange(
+    order: Order,
+    newStatus: UpdateOrderStatusData['order_status']
+  ): Promise<void> {
+    if (newStatus === 'cooking') {
+      if (!order.payment) {
+        throw new Error('PAYMENT_NOT_FOUND')
+      }
+
+      if (order.payment.paymentStatus !== 'paid') {
+        throw new Error('ORDER_MUST_BE_PAID_BEFORE_COOKING')
+      }
+    }
   }
 
   async handleMidtransWebhook(notificationData: any) {

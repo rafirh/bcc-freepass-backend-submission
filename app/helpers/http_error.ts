@@ -37,6 +37,8 @@ export function handleHttpError(error: any, response: HttpContext['response']) {
     REVIEW_ALREADY_EXISTS: [400, 'You have already reviewed this order'],
     PAYMENT_NOT_FOUND: [404, 'Payment record not found for this order'],
     TABLE_NOT_FOUND: [404, 'Table not found'],
+    INVALID_STATUS_TRANSITION: [400, 'Invalid order status transition'],
+    ORDER_MUST_BE_PAID_BEFORE_COOKING: [400, 'Order must be paid before cooking'],
   }
 
   if (errorMap[error.message]) {
