@@ -14,7 +14,6 @@ export default class extends BaseSchema {
         enumName: 'rating_scale'
       }).notNullable()
       table.text('comment').nullable()
-      table.boolean('is_visible').notNullable().defaultTo(true)
 
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
