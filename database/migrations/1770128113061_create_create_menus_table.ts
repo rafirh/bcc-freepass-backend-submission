@@ -31,32 +31,9 @@ export default class extends BaseSchema {
     this.schema.raw('CREATE INDEX idx_menus_canteen_id ON menus (canteen_id)')
     this.schema.raw('CREATE INDEX idx_menus_category ON menus (category)')
     this.schema.raw('CREATE INDEX idx_menus_stock_status ON menus (stock_status)')
-
-    // Auto-update stock_status based on stock value
-    this.schema.raw(`
-      CREATE OR REPLACE FUNCTION update_stock_status()
-      RETURNS TRIGGER AS $$
-      BEGIN
-          IF NEW.stock > 0 THEN
-              NEW.stock_status := 'available';
-          ELSE
-              NEW.stock_status := 'out_of_stock';
-          END IF;
-          NEW.updated_at := NOW();
-          RETURN NEW;
-      END;
-      $$ LANGUAGE plpgsql;
-
-      CREATE TRIGGER trg_menus_stock_status
-          BEFORE INSERT OR UPDATE ON menus
-          FOR EACH ROW
-          EXECUTE FUNCTION update_stock_status();
-    `)
   }
 
   async down() {
-    this.schema.raw('DROP TRIGGER IF EXISTS trg_menus_stock_status ON menus')
-    this.schema.raw('DROP FUNCTION IF EXISTS update_stock_status()')
     this.schema.dropTable(this.tableName)
   }
 }
