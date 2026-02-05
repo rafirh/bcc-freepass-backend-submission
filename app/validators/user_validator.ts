@@ -33,3 +33,27 @@ export const updateOwnerValidator = vine.compile(
     avatar: vine.file({ size: '2mb', extnames: ['jpg', 'jpeg', 'png', 'gif'] }).optional(),
   })
 )
+
+export const getCanteensQueryValidator = vine.compile(
+  vine.object({
+    page: vine.number().min(1).optional(),
+    limit: vine.number().min(1).max(100).optional(),
+  })
+)
+
+export const getMenusByCanteenQueryValidator = vine.compile(
+  vine.object({
+    page: vine.number().min(1).optional(),
+    limit: vine.number().min(1).max(100).optional(),
+    category: vine.enum(['food', 'drink', 'snack', 'combo']).optional(),
+    search: vine.string().trim().optional(),
+  })
+)
+
+export const getUserOrdersQueryValidator = vine.compile(
+  vine.object({
+    page: vine.number().min(1).optional(),
+    limit: vine.number().min(1).max(100).optional(),
+    status: vine.enum(['waiting', 'cooking', 'ready', 'completed', 'cancelled']).optional(),
+  })
+)

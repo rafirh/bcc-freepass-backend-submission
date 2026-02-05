@@ -42,6 +42,36 @@ export interface MenuResponse {
 }
 
 export class MenuService {
+  async getMenusByCanteenId(
+    canteenId: string,
+    page: number,
+    limit: number,
+    category?: 'food' | 'drink' | 'snack' | 'combo',
+    search?: string
+  ) {
+    const query = Menu.query()
+      .where('canteen_id', canteenId)
+      .where('is_active', true)
+      .orderBy('created_at', 'desc')
+
+    if (category) {
+      query.where('category', category)
+    }
+
+    if (search) {
+      query.where('name', 'ilike', `%${search}%`)
+    }
+
+    const menus = await query.paginate(page, limit)
+
+    const menuData = menus.all().map((menu) => this.formatMenuResponse(menu))
+
+    return {
+      menus: menuData,
+      meta: menus.getMeta(),
+    }
+  }
+
   async getMenusByOwnerId(ownerId: string, page: number, limit: number) {
     const canteen = await Canteen.query().where('owner_id', ownerId).firstOrFail()
 

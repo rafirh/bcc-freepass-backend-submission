@@ -13,11 +13,13 @@ import { middleware } from '#start/kernel'
 const HealthController = () => import('#controllers/health_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const UserController = () => import('#controllers/user_controller')
+const CanteenController = () => import('#controllers/canteen_controller')
 const AdminUserController = () => import('#controllers/admin/user_controller')
 const AdminTableController = () => import('#controllers/admin/table_controller')
 const OwnerCanteenController = () => import('#controllers/owner/canteen_controller')
 const OwnerMenuController = () => import('#controllers/owner/menu_controller')
 const OwnerOrderController = () => import('#controllers/owner/order_controller')
+const UserOrderController = () => import('#controllers/user/order_controller')
 
 router.get('/', async () => {
   return {
@@ -39,6 +41,14 @@ router.group(() => {
     router.get('/me', [UserController, 'me'])
     router.put('/profile', [UserController, 'updateProfile'])
   }).prefix('/users').use(middleware.auth())
+
+  router.get('/canteens', [CanteenController, 'index'])
+  router.get('/canteens/:id', [CanteenController, 'show'])
+  router.get('/canteens/:canteenId/menus', [CanteenController, 'getMenus'])
+
+  router.group(() => {
+    router.get('/orders', [UserOrderController, 'index'])
+  }).prefix('/user').use(middleware.auth())
 
   router.group(() => {
     router.resource('users', AdminUserController).apiOnly()

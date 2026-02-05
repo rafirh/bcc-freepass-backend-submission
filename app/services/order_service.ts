@@ -21,6 +21,11 @@ export interface OrderResponse {
     full_name: string
     phone_number: string | null
   }
+  canteen?: {
+    id: string
+    name: string
+    location: string | null
+  }
   table?: {
     id: string
     table_number: string
@@ -34,6 +39,33 @@ export interface OrderResponse {
 }
 
 export class OrderService {
+  async getOrdersByUserId(
+    userId: string,
+    page: number,
+    limit: number,
+    status?: 'waiting' | 'cooking' | 'ready' | 'completed' | 'cancelled'
+  ) {
+    const query = Order.query()
+      .where('user_id', userId)
+      .preload('canteen')
+      .preload('table')
+      .preload('payment')
+      .orderBy('created_at', 'desc')
+
+    if (status) {
+      query.where('order_status', status)
+    }
+
+    const orders = await query.paginate(page, limit)
+
+    const orderData = orders.all().map((order) => this.formatOrderResponse(order))
+
+    return {
+      orders: orderData,
+      meta: orders.getMeta(),
+    }
+  }
+
   async getOrdersByOwnerId(
     ownerId: string,
     page: number,
@@ -118,6 +150,14 @@ export class OrderService {
         email: order.user.email,
         full_name: order.user.fullName,
         phone_number: order.user.phoneNumber,
+      }
+    }
+
+    if (order.canteen) {
+      response.canteen = {
+        id: order.canteen.id,
+        name: order.canteen.name,
+        location: order.canteen.location,
       }
     }
 

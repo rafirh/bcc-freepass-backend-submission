@@ -32,6 +32,29 @@ export interface CanteenResponse {
 }
 
 export class CanteenService {
+  async getAllCanteens(page: number, limit: number) {
+    const canteens = await Canteen.query()
+      .orderBy('created_at', 'desc')
+      .paginate(page, limit)
+
+    const canteenData = canteens.all().map((canteen) => this.formatCanteenResponse(canteen))
+
+    return {
+      canteens: canteenData,
+      meta: canteens.getMeta(),
+    }
+  }
+
+  async getCanteenById(id: string): Promise<CanteenResponse | null> {
+    const canteen = await Canteen.query().where('id', id).first()
+
+    if (!canteen) {
+      return null
+    }
+
+    return this.formatCanteenResponse(canteen)
+  }
+
   async getCanteenByOwnerId(ownerId: string): Promise<CanteenResponse | null> {
     const canteen = await Canteen.query().where('owner_id', ownerId).first()
 
