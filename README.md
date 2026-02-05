@@ -164,18 +164,12 @@ Before running this service, ensure you have the following installed:
 
 ### Installation Steps
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd bcc-freepass-backend-submission
-   ```
-
-2. **Install dependencies**
+1. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Set up environment variables**
+2. **Set up environment variables**
    
    Copy the `.env.example` file to `.env`:
    ```bash
@@ -199,18 +193,18 @@ Before running this service, ensure you have the following installed:
    - `HOST` - Server host (default: `localhost`)
    - `MIDTRANS_ENV` - Midtrans environment (default: `sandbox`, use `production` for live)
 
-4. **Create PostgreSQL database**
+3. **Create PostgreSQL database**
    ```bash
    createdb bcc_canteen
    ```
    Or create manually via PostgreSQL client/pgAdmin.
 
-5. **Run database migrations**
+4. **Run database migrations**
    ```bash
    node ace migration:run
    ```
 
-6. **Seed the database (optional)**
+5. **Seed the database (optional)**
    ```bash
    node ace db:seed
    ```
@@ -222,13 +216,13 @@ Before running this service, ensure you have the following installed:
    - Menus for each canteen
    - Sample tables
 
-7. **Generate APP_KEY**
+6. **Generate APP_KEY**
    ```bash
    node ace generate:key
    ```
    Copy the generated key to `APP_KEY` in your `.env` file.
 
-8. **Start the development server**
+7. **Start the development server**
    ```bash
    npm run dev
    ```
@@ -258,9 +252,9 @@ Before running this service, ensure you have the following installed:
    ```
    https://gl71p1jkcw.apidog.io/
    ```
-2. **Deployed API URL**
+2. **Explore the endpoints**
    
-   The deployed API can be accessed at:
+   You can access the deployed API at:
    ```
    http://bcc-canteen.iccn.or.id/
    ```
