@@ -8,7 +8,6 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
       table.uuid('order_id').notNullable().references('id').inTable('orders').onDelete('CASCADE')
       table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
-      table.uuid('canteen_id').notNullable().references('id').inTable('canteens').onDelete('CASCADE')
       table.enu('rating', ['1', '2', '3', '4', '5'], {
         useNative: true,
         existingType: true,
@@ -25,7 +24,6 @@ export default class extends BaseSchema {
 
     this.schema.raw('CREATE INDEX idx_reviews_order_id ON reviews (order_id)')
     this.schema.raw('CREATE INDEX idx_reviews_user_id ON reviews (user_id)')
-    this.schema.raw('CREATE INDEX idx_reviews_canteen_id ON reviews (canteen_id)')
   }
 
   async down() {
