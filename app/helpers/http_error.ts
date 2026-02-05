@@ -19,6 +19,9 @@ export function handleHttpError(error: any, response: HttpContext['response']) {
 
   const errorMap: Record<string, [number, string]> = {
     EMAIL_EXISTS: [409, 'Email already exists'],
+    INVALID_CREDENTIALS: [401, 'Invalid email or password'],
+    ACCOUNT_DISABLED: [403, 'Account is disabled'],
+    INVALID_OLD_PASSWORD: [401, 'Invalid old password'],
     CANNOT_UPDATE_USER_ROLE: [
       403,
       'Cannot update user with role "user". Only owners can be updated.',

@@ -84,4 +84,15 @@ export class AuthService {
   async logout(user: User, tokenId: string | number | BigInt): Promise<void> {
     await User.accessTokens.delete(user, tokenId)
   }
+
+  async changePassword(user: User, oldPassword: string, newPassword: string): Promise<void> {
+    const isOldPasswordValid = await hash.verify(user.passwordHash, oldPassword)
+    if (!isOldPasswordValid) {
+      throw new Error('INVALID_OLD_PASSWORD')
+    }
+
+    const newPasswordHash = await hash.make(newPassword)
+    user.passwordHash = newPasswordHash
+    await user.save()
+  }
 }

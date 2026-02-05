@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { AuthService } from '#services/auth_service'
-import { registerValidator, loginValidator } from '#validators/auth_validator'
-import { errors } from '@vinejs/vine'
+import { registerValidator, loginValidator, changePasswordValidator } from '#validators/auth_validator'
+import { handleHttpError } from '#helpers/http_error'
 
 export default class AuthController {
   private authService: AuthService
@@ -31,26 +31,7 @@ export default class AuthController {
         },
       })
     } catch (error) {
-      if (error instanceof errors.E_VALIDATION_ERROR) {
-        return response.status(400).json({
-          status: 'error',
-          message: 'Validation failed',
-          errors: error.messages,
-        })
-      }
-
-      if (error.message === 'EMAIL_EXISTS') {
-        return response.status(409).json({
-          status: 'error',
-          message: 'Email already registered',
-        })
-      }
-
-      console.error('Registration error:', error)
-      return response.status(500).json({
-        status: 'error',
-        message: 'Internal server error',
-      })
+      return handleHttpError(error, response)
     }
   }
 
@@ -66,32 +47,7 @@ export default class AuthController {
         data: authData,
       })
     } catch (error) {
-      if (error instanceof errors.E_VALIDATION_ERROR) {
-        return response.status(400).json({
-          status: 'error',
-          message: 'Missing email or password',
-        })
-      }
-
-      if (error.message === 'INVALID_CREDENTIALS') {
-        return response.status(401).json({
-          status: 'error',
-          message: 'Invalid email or password',
-        })
-      }
-
-      if (error.message === 'ACCOUNT_DISABLED') {
-        return response.status(403).json({
-          status: 'error',
-          message: 'Account is disabled',
-        })
-      }
-
-      console.error('Login error:', error)
-      return response.status(500).json({
-        status: 'error',
-        message: 'Internal server error',
-      })
+      return handleHttpError(error, response)
     }
   }
 
@@ -109,11 +65,23 @@ export default class AuthController {
         message: 'Logout successful',
       })
     } catch (error) {
-      console.error('Logout error:', error)
-      return response.status(500).json({
-        status: 'error',
-        message: 'Internal server error',
+      return handleHttpError(error, response)
+    }
+  }
+
+  async changePassword({ auth, request, response }: HttpContext) {
+    try {
+      const user = auth.getUserOrFail()
+      const payload = await request.validateUsing(changePasswordValidator)
+
+      await this.authService.changePassword(user, payload.old_password, payload.new_password)
+
+      return response.status(200).json({
+        status: 'success',
+        message: 'Password changed successfully',
       })
+    } catch (error) {
+      return handleHttpError(error, response)
     }
   }
 }
