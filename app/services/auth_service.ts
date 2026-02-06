@@ -33,11 +33,9 @@ export class AuthService {
       throw new Error('EMAIL_EXISTS')
     }
 
-    const passwordHash = await hash.make(data.password)
-
     const user = await User.create({
       email: data.email,
-      passwordHash: passwordHash,
+      passwordHash: data.password,
       fullName: data.full_name,
       phoneNumber: data.phone_number || null,
       role: 'user',
@@ -91,8 +89,7 @@ export class AuthService {
       throw new Error('INVALID_OLD_PASSWORD')
     }
 
-    const newPasswordHash = await hash.make(newPassword)
-    user.passwordHash = newPasswordHash
+    user.passwordHash = newPassword
     await user.save()
   }
 }

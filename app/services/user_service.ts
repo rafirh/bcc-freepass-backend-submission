@@ -4,7 +4,6 @@ import { cuid } from '@adonisjs/core/helpers'
 import { unlink } from 'node:fs/promises'
 import path from 'node:path'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
-import hash from '@adonisjs/core/services/hash'
 
 export interface UpdateProfileData {
   full_name?: string
@@ -140,11 +139,9 @@ export class UserService {
       throw new Error('EMAIL_EXISTS')
     }
 
-    const passwordHash = await hash.make(data.password)
-
     const user = await User.create({
       email: data.email,
-      passwordHash,
+      passwordHash: data.password,
       role: 'owner',
       fullName: data.full_name,
       phoneNumber: data.phone_number || null,
@@ -171,7 +168,7 @@ export class UserService {
     }
 
     if (data.password) {
-      user.passwordHash = await hash.make(data.password)
+      user.passwordHash = data.password
     }
 
     if (data.full_name) {
