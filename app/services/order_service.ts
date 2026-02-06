@@ -54,6 +54,7 @@ export interface OrderResponse {
     payment_status: 'pending' | 'paid' | 'failed' | 'refunded'
     payment_method: string | null
     amount: number
+    payment_url: string | null
   }
   items?: Array<{
     id: string
@@ -192,6 +193,7 @@ export class OrderService {
       payment.paymentStatus = 'pending'
       payment.amount = totalAmount
       payment.gatewayTransactionId = transaction.token
+      payment.paymentUrl = transaction.redirect_url
       payment.useTransaction(trx)
       await payment.save()
 
@@ -472,6 +474,7 @@ export class OrderService {
         payment_status: order.payment.paymentStatus,
         payment_method: order.payment.paymentMethod,
         amount: order.payment.amount,
+        payment_url: order.payment.paymentUrl,
       }
     }
 

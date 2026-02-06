@@ -22,6 +22,9 @@ export default class Payment extends BaseModel {
   @column({ columnName: 'gateway_transaction_id' })
   declare gatewayTransactionId: string | null
 
+  @column({ columnName: 'payment_url' })
+  declare paymentUrl: string | null
+
   @column({ columnName: 'paid_at' })
   declare paidAt: DateTime | null
 
