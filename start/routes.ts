@@ -25,7 +25,7 @@ const UserOrderController = () => import('#controllers/user/order_controller')
 const UserReviewController = () => import('#controllers/user/review_controller')
 const MidtransWebhookController = () => import('#controllers/midtrans_webhook_controller')
 
-router.get('/', async () => {
+router.get('/api', async () => {
   return {
     status: 'success',
     message: 'Welcome to the BCC Freepass Backend API',
