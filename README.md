@@ -273,8 +273,25 @@ Before running this service, ensure you have the following installed:
    You can access the deployed API at:
 
    ```
-   http://bcc-canteen.iccn.or.id/
+   http://bcc-canteen.iccn.or.id/api
    ```
+
+### Api Implementation
+
+**Frontend Application:**
+
+You can access the live frontend application at:
+
+```
+http://bcc-canteen.iccn.or.id
+```
+
+**Try Ordering:**
+
+To place an order, you can scan the QR code below (Meja 1):
+
+![Meja 1 QR Code](docs/MEJA_1.png)
+
 
 ### Testing Payment Gateway
 
