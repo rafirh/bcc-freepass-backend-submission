@@ -58,6 +58,7 @@ router
     router.get('/canteens/:canteenId/menus', [CanteenController, 'getMenus'])
 
     router.get('/tables', [TableController, 'index'])
+    router.get('/tables/:id', [TableController, 'show'])
 
     router.group(() => {
       router.post('/webhooks/midtrans', [MidtransWebhookController, 'handle'])

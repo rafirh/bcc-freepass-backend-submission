@@ -51,7 +51,7 @@ export class TableService {
   }
 
   async getTableById(id: string): Promise<TableResponse> {
-    const table = await Table.findOrFail(id)
+    const table = await Table.query().where('id', id).where('is_active', true).firstOrFail()
     return this.formatTableResponse(table)
   }
 
