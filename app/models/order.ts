@@ -6,6 +6,7 @@ import Canteen from '#models/canteen'
 import Table from '#models/table'
 import Payment from '#models/payment'
 import OrderItem from '#models/order_item'
+import Review from '#models/review'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
@@ -49,4 +50,7 @@ export default class Order extends BaseModel {
 
   @hasMany(() => OrderItem, { foreignKey: 'orderId' })
   declare items: HasMany<typeof OrderItem>
+
+  @hasOne(() => Review, { foreignKey: 'orderId' })
+  declare review: HasOne<typeof Review>
 }

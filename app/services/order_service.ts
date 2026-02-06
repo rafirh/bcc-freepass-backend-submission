@@ -64,6 +64,12 @@ export interface OrderResponse {
     unit_price: number
     subtotal: number
   }>
+  review?: {
+    id: string
+    rating: string
+    comment: string | null
+    created_at: string | null
+  } | null
 }
 
 export class OrderService {
@@ -252,6 +258,7 @@ export class OrderService {
       .preload('table')
       .preload('payment')
       .preload('items')
+      .preload('review')
       .firstOrFail()
 
     return this.formatOrderResponse(order)
@@ -487,6 +494,17 @@ export class OrderService {
         unit_price: item.unitPrice,
         subtotal: item.subtotal,
       }))
+    }
+
+    if (order.review) {
+      response.review = {
+        id: order.review.id,
+        rating: order.review.rating,
+        comment: order.review.comment,
+        created_at: order.review.createdAt?.toISO(),
+      }
+    } else {
+      response.review = null
     }
 
     return response
