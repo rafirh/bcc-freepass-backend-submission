@@ -233,6 +233,7 @@ export class OrderService {
       .preload('canteen')
       .preload('table')
       .preload('payment')
+      .preload('review')
       .orderBy('created_at', 'desc')
 
     if (status) {
@@ -277,6 +278,7 @@ export class OrderService {
       .preload('user')
       .preload('table')
       .preload('payment')
+      .preload('review')
       .orderBy('created_at', 'desc')
 
     if (status) {
@@ -302,6 +304,7 @@ export class OrderService {
       .preload('user')
       .preload('table')
       .preload('payment')
+      .preload('review')
       .firstOrFail()
 
     return this.formatOrderResponse(order)
