@@ -304,6 +304,7 @@ export class OrderService {
       .preload('user')
       .preload('table')
       .preload('payment')
+      .preload('items')
       .preload('review')
       .firstOrFail()
 
