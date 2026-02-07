@@ -95,7 +95,7 @@ router
 
         router.get('/orders', [OwnerOrderController, 'index'])
         router.get('/orders/:id', [OwnerOrderController, 'show'])
-        router.patch('/orders/:id/status', [OwnerOrderController, 'updateStatus'])
+        router.put('/orders/:id/status', [OwnerOrderController, 'updateStatus'])
 
         router.get('/reviews', [OwnerReviewController, 'index'])
         router.delete('/reviews/:id', [OwnerReviewController, 'destroy'])
