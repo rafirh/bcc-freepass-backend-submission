@@ -290,7 +290,7 @@ http://bcc-canteen.iccn.or.id
 
 To place an order, you can scan the QR code below (Meja 1):
 
-![Meja 1 QR Code](docs/TABLE_1.png)
+<img src="docs/TABLE_1.png" alt="Meja 1 QR Code" width="300">
 
 
 ### Testing Payment Gateway
