@@ -282,8 +282,14 @@ Before running this service, ensure you have the following installed:
 
 You can access the live frontend application at:
 
+User Role:
 ```
 http://bcc-canteen.iccn.or.id
+```
+
+Canteen Owner Role:
+```
+http://bcc-canteen.iccn.or.id/owner/login
 ```
 
 **Try Ordering:**
